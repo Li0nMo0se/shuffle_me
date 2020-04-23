@@ -1,12 +1,16 @@
+#include "words-manager.hh"
 #include "main-window.hh"
 
 MainWindow::MainWindow(WordsManager* words_manager, QWidget* parent)
  : QWidget(parent)
+ , answer_is_displayed_(false)
  , b_add_(new QPushButton("Add", this))
- , show_word_(new QLabel(this))
+ , question_label_(new QLabel(this))
+ , answer_label_(new QLabel(this))
  , b_next_(new QPushButton("Next", this))
  , b_exit_(new QPushButton("Exit", this))
  , b_start_(new QPushButton("Start", this))
+ , b_show_answer_(new QPushButton("Show answer", this))
  , word_add_input_(new QInputDialog(this))
  , words_manager_(words_manager)
 {
@@ -30,10 +34,19 @@ MainWindow::MainWindow(WordsManager* words_manager, QWidget* parent)
     b_exit_->setGeometry(width - b_width, 0, b_width, b_height);
     connect(b_exit_, SIGNAL(clicked()), this, SLOT(exit_app()));
 
-    // Show word area
-    show_word_->setGeometry(width - o_width, height - o_height, o_width,
-        o_height);
-    show_word_->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    // Show question area
+    question_label_->setGeometry(0, b_height + 10, label_width, label_height);
+    question_label_->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+
+    // Show answer area
+    answer_label_->setGeometry(0, b_height + 10 + label_height,
+        label_width, label_height);
+    answer_label_->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    answer_label_->setVisible(false);
+
+    // Show answer button
+    b_show_answer_->setGeometry(2 * b_width, 0, b_width, b_height);
+    connect(b_show_answer_, SIGNAL(clicked()), this, SLOT(switch_answer()));
 
     // Input Dialog
     word_add_input_->setInputMode(QInputDialog::TextInput);
@@ -47,27 +60,38 @@ void MainWindow::exit_app()
 
 void MainWindow::next_word()
 {
-    std::string* next_str = words_manager_->next_word();
+    hide_answer();
+    WordsManager::pair_t* pair = words_manager_->next_word();
     // there is a next word, display it
-    if (!next_str->empty())
+    if (!pair->first.empty())
     {
-        show_word_->setText(QString::fromUtf8(next_str->data()));
-        return;
+        question_label_->setText(QString::fromUtf8(pair->first.data()));
+        answer_label_->setText(QString::fromUtf8(pair->second.data()));
     }
-    // no next word
-    show_word_->setText("You completed the whole list. Restart!");
-    b_next_->setVisible(false);
-    b_start_->setVisible(true);
-    delete next_str;
+    else
+    {
+        // no next word
+        question_label_->setText("You completed the whole list. Restart!");
+        b_next_->setVisible(false);
+        b_start_->setVisible(true);
+    }
+    delete pair;
 }
 
 void MainWindow::add_word()
 {
     bool ok;
-    QString text = QInputDialog::getText(word_add_input_, "Add a word",
-        "Enter a word:", QLineEdit::Normal, "", &ok);
-    if (ok && !text.isEmpty())
-        words_manager_->add_word(text.toUtf8().data());
+    QString question = QInputDialog::getText(word_add_input_, "Add a question",
+        "Enter a question:", QLineEdit::Normal, "", &ok);
+    if (!ok || question.isEmpty())
+        return;
+    QString answer = QInputDialog::getText(word_add_input_, "Add an answer to "
+        + question, "Enter an answer:",
+        QLineEdit::Normal, "", &ok);
+    if (!ok || answer.isEmpty())
+        return;
+    words_manager_->add_pair(question.toUtf8().data(),
+        answer.toUtf8().data());
 }
 
 void MainWindow::start()
@@ -79,4 +103,26 @@ void MainWindow::start()
 
     // display first word
     next_word();
+}
+
+void MainWindow::hide_answer()
+{
+    b_show_answer_->setText("show answer");
+    answer_label_->setVisible(false);
+    answer_is_displayed_ = false;
+}
+
+void MainWindow::show_answer()
+{
+    b_show_answer_->setText("hide answer");
+    answer_label_->setVisible(true);
+    answer_is_displayed_ = true;
+}
+
+void MainWindow::switch_answer()
+{
+    if (answer_is_displayed_)
+        hide_answer();
+    else
+        show_answer();
 }

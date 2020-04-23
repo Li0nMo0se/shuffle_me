@@ -1,21 +1,21 @@
 template <typename T>
-void Data<T>::push_back(T t)
+void Data<T>::push_back(T* t)
 {
     list_.push_back(t);
 }
 
 template <typename T>
-T& Data<T>::get(int i)
+T* Data<T>::get(int i)
 {
-    return this[i];
+    return *this[i];
 }
 
 template <typename T>
-T& Data<T>::operator[](int i)
+T* Data<T>::operator[](int i)
 {
     auto it = list_.begin();
     if (i < 0 || i >= (int)list_.size())
-        return *it;
+        return nullptr;
     while (i > 0)
     {
         i--;
@@ -47,5 +47,6 @@ void Data<T>::remove(int i)
         i--;
         it++;
     }
+    delete *it;
     list_.erase(it);
 }

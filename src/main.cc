@@ -6,7 +6,7 @@ int main(int argc, char **argv)
 {
     QApplication app (argc, argv); // create the app
 
-    Data<std::string>* data = new Data<std::string>;
+    Data<WordsManager::pair_t>* data = new Data<WordsManager::pair_t>;
     WordsManager* words_manager = new WordsManager(data);
     MainWindow main_window(words_manager);
     main_window.show();
