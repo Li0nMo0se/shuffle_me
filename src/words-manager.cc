@@ -1,5 +1,5 @@
-#include <iostream>
 #include <random>
+#include <iostream>
 
 #include "words-manager.hh"
 
@@ -21,13 +21,15 @@ void WordsManager::add_word(std::string str_to_add)
     file_out_ << str_to_add << std::endl;
 }
 
-std::string WordsManager::next_word()
+std::string* WordsManager::next_word()
 {
     // take care of the case the vector is empty
     if (data_->is_empty())
-        return "";
-    int random_pos = rand(0, data_->size());
-    std::string& next = (*data_)[random_pos];
+        return new std::string("");
+    int random_pos = 0;
+    if (data_->size() > 1)
+        random_pos = rand(0, data_->size() - 1);
+    std::string* next = new std::string((*data_)[random_pos]);
     data_->remove(random_pos);
     return next;
 }

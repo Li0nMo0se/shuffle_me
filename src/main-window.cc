@@ -1,5 +1,4 @@
 #include "main-window.hh"
-#include <iostream>
 
 MainWindow::MainWindow(WordsManager* words_manager, QWidget* parent)
  : QWidget(parent)
@@ -48,17 +47,18 @@ void MainWindow::exit_app()
 
 void MainWindow::next_word()
 {
-    std::string next_str = words_manager_->next_word();
+    std::string* next_str = words_manager_->next_word();
     // there is a next word, display it
-    if (!next_str.empty())
+    if (!next_str->empty())
     {
-        show_word_->setText(QString::fromStdString(next_str));
+        show_word_->setText(QString::fromUtf8(next_str->data()));
         return;
     }
     // no next word
     show_word_->setText("You completed the whole list. Restart!");
     b_next_->setVisible(false);
     b_start_->setVisible(true);
+    delete next_str;
 }
 
 void MainWindow::add_word()

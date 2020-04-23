@@ -17,9 +17,9 @@ public:
     void add_word(std::string str_to_add);
 
     // Return the next word
-    std::string next_word();
+    std::string* next_word();
 
-    // Return a random between between [min, max[
+    // Return a random between between [min, max]
     int rand(int min, int max);
 
     // Load the data from the file
