@@ -18,7 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 # Input
-HEADERS += src/main-window.hh src/words-manager.hh
+HEADERS += src/main-window.hh src/words-manager.hh src/data.hh
 SOURCES += src/main-window.cc src/main.cc src/words-manager.cc
 QT += core
 QT += gui

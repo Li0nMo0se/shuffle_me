@@ -135,7 +135,8 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		shuffle_me.pro src/main-window.hh \
-		src/words-manager.hh src/main-window.cc \
+		src/words-manager.hh \
+		src/data.hh src/main-window.cc \
 		src/main.cc \
 		src/words-manager.cc
 QMAKE_TARGET  = shuffle_me
@@ -317,7 +318,7 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/main-window.hh src/words-manager.hh $(DISTDIR)/
+	$(COPY_FILE) --parents src/main-window.hh src/words-manager.hh src/data.hh $(DISTDIR)/
 	$(COPY_FILE) --parents src/main-window.cc src/main.cc src/words-manager.cc $(DISTDIR)/
 
 
@@ -355,6 +356,8 @@ compiler_moc_header_clean:
 	-$(DEL_FILE) moc_main-window.cpp
 moc_main-window.cpp: src/main-window.hh \
 		src/words-manager.hh \
+		src/data.hh \
+		src/data.hxx \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/boulusman/project/shuffle_me/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/boulusman/project/shuffle_me -I/home/boulusman/project/shuffle_me -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/9/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/main-window.hh -o moc_main-window.cpp
@@ -376,14 +379,20 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean
 ####### Compile
 
 main-window.o: src/main-window.cc src/main-window.hh \
-		src/words-manager.hh
+		src/words-manager.hh \
+		src/data.hh \
+		src/data.hxx
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main-window.o src/main-window.cc
 
 main.o: src/main.cc src/main-window.hh \
-		src/words-manager.hh
+		src/words-manager.hh \
+		src/data.hh \
+		src/data.hxx
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o src/main.cc
 
-words-manager.o: src/words-manager.cc src/words-manager.hh
+words-manager.o: src/words-manager.cc src/words-manager.hh \
+		src/data.hh \
+		src/data.hxx
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o words-manager.o src/words-manager.cc
 
 moc_main-window.o: moc_main-window.cpp 
