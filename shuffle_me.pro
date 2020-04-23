@@ -24,4 +24,4 @@ QT += core
 QT += gui
 QT += widgets
 
-CONFIG += qt debug
+CONFIG += qt release
