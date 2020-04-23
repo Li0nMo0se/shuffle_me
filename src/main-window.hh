@@ -27,6 +27,8 @@ private:
     QPushButton* b_next_;
     // Exit the program
     QPushButton* b_exit_;
+    // Start the program
+    QPushButton* b_start_;
     // Input Dialog to add a word
     QInputDialog* word_add_input_;
 
@@ -49,6 +51,7 @@ public slots:
     void exit_app();
     void next_word();
     void add_word();
+    void start();
 };
 
 

@@ -7,6 +7,7 @@ MainWindow::MainWindow(WordsManager* words_manager, QWidget* parent)
  , show_word_(new QLabel(this))
  , b_next_(new QPushButton("Next", this))
  , b_exit_(new QPushButton("Exit", this))
+ , b_start_(new QPushButton("Start", this))
  , word_add_input_(new QInputDialog(this))
  , words_manager_(words_manager)
 {
@@ -19,7 +20,12 @@ MainWindow::MainWindow(WordsManager* words_manager, QWidget* parent)
 
     // Next Button
     b_next_->setGeometry(b_width, 0, b_width, b_height);
+    b_next_->setVisible(false);
     connect(b_next_, SIGNAL(clicked()), this, SLOT(next_word()));
+
+    // Start Button
+    b_start_->setGeometry(b_width, 0, b_width, b_height); // same as next button
+    connect(b_start_, SIGNAL(clicked()), this, SLOT(start()));
 
     // Exit Button
     b_exit_->setGeometry(width - b_width, 0, b_width, b_height);
@@ -43,7 +49,16 @@ void MainWindow::exit_app()
 void MainWindow::next_word()
 {
     std::string next_str = words_manager_->next_word();
-    show_word_->setText(QString::fromStdString(next_str));
+    // there is a next word, display it
+    if (!next_str.empty())
+    {
+        show_word_->setText(QString::fromStdString(next_str));
+        return;
+    }
+    // no next word
+    show_word_->setText("You completed the whole list. Restart!");
+    b_next_->setVisible(false);
+    b_start_->setVisible(true);
 }
 
 void MainWindow::add_word()
@@ -53,5 +68,15 @@ void MainWindow::add_word()
         "Enter a word:", QLineEdit::Normal, "", &ok);
     if (ok && !text.isEmpty())
         words_manager_->add_word(text.toUtf8().data());
+}
 
+void MainWindow::start()
+{
+    words_manager_->start(); // load from the file
+
+    b_next_->setVisible(true);
+    b_start_->setVisible(false);
+
+    // display first word
+    next_word();
 }
