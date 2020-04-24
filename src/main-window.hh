@@ -43,8 +43,8 @@ private:
     WordsManager* words_manager_;
 
     // window size
-    static const int width = 400;
-    static const int height = 100;
+    static const int width = 600;
+    static const int height = 150;
 
     // button size
     static const int b_width = width / 4;
@@ -53,6 +53,9 @@ private:
     // Ouput area size
     static const int label_width = width;
     static const int label_height = (height - b_height - 2 * 10) / 2;
+
+    // label font size
+    static const int label_font_size = 28;
 
 private:
     // helper methods

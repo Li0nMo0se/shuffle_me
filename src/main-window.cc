@@ -37,12 +37,19 @@ MainWindow::MainWindow(WordsManager* words_manager, QWidget* parent)
     // Show question area
     question_label_->setGeometry(0, b_height + 10, label_width, label_height);
     question_label_->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    question_label_->setStyleSheet(QString::fromStdString("font-size: "
+        + std::to_string(label_font_size) + "px;"));
+    question_label_->setWordWrap(true);
 
     // Show answer area
     answer_label_->setGeometry(0, b_height + 10 + label_height,
         label_width, label_height);
     answer_label_->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     answer_label_->setVisible(false);
+    answer_label_->setStyleSheet(QString::fromStdString("font-size: "
+        + std::to_string(label_font_size) + "px;"));
+    answer_label_->setWordWrap(true);
+
 
     // Show answer button
     b_show_answer_->setGeometry(2 * b_width, 0, b_width, b_height);
