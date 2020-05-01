@@ -1,12 +1,16 @@
-### Shuffle Me
+# Shuffle Me
 
 ## prerequisites
 
-# Qt
+### Qt
 
 Qt framework for c++ must installed.  
 To do so:  
 `sudo apt install qt5-default`
+
+## Build
+
+`make`
 
 ## CSV file 
 
@@ -20,14 +24,14 @@ For a pair of question and answer, it follows this structure: `question;answer`
 
 ## Manual
 
-# Add
+### Add
 Add a pair of question and answer. Type the question first, then the answer
 
-# Next
+### Next
 Go to the next question
 
-# Show/Hide answer
+### Show/Hide answer
 Show or hide the answer. The answer is automatically hid when the user goes to the next question
 
-# Exit
+### Exit
 Exit the program
