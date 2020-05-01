@@ -1,6 +1,6 @@
 # Shuffle Me
 
-## prerequisites
+## Prerequisites
 
 ### Qt
 
