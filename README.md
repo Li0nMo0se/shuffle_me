@@ -25,9 +25,10 @@ For a pair of question and answer, it follows this structure: `question;answer`
 ## Manual
 
 ### Run the program
-You can run it by default ./shuffle_me. It will look for the default file which
-is `words.list`.
-Or you must add the -f options if you want to use a specific csv file:
+You can run it by default:\
+`./shuffle_me`. It will look for the default file which is **words.list**.
+
+**-f options** allows you to use a specific csv file:\
 `./shuffle_me -f filename.csv`
 
 
